@@ -1,0 +1,30 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# VS Code settings
+.vscode/
+
+# Node modules (if you ever use npm packages later)
+node_modules/
+
+# Dist/Build directories (in case of future bundling)
+dist/
+build/
+
+# Env files (not currently used but good practice)
+.env
+.env.*
+
+# Ignore IDE-specific files
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Cache folders
+.cache/

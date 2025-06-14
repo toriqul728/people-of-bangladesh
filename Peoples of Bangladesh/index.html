@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>People of Bangladesh</title>
+  <link rel="icon" type="image/png" href="assets/site profile.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Source+Sans+3&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5J4FZYL6SD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5J4FZYL6SD');
+</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/macy@2.5.1/dist/macy.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ["Poppins", "sans-serif"],
+            overlay: ['"Source Sans 3"', "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body {
+      background: #222831;
+      color: white;
+      margin: 0;
+      font-family: "Source Sans 3", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Container that holds two rows: welcome text on top, gallery below */
+    #welcome-gallery-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Top row: welcome text spanning full width */
+    #welcome-text {
+      font-style: italic;
+      font-size: 1.5rem;
+      line-height: 1.6;
+      text-align: center;
+      color: #ccc;
+      user-select: none;
+      font-family: "Source Sans 3", sans-serif;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Bottom row: gallery container full width */
+    #gallery-container {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    #gallery-container.visible {
+      opacity: 1;
+    }
+
+    /* Fade-in slide-up animation */
+    @keyframes fadeInSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Animate each gallery image */
+    #gallery-container img.fade-in {
+      opacity: 0;
+      animation: fadeInSlideUp 0.8s ease forwards;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #gallery-container img.fade-in:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header
+    class="flex items-center justify-between px-4 py-3 shadow-md shadow-black sticky top-0 bg-[#222831] z-40"
+  >
+    <div class="flex items-center space-x-3">
+      <img
+        src="assets/site profile.png"
+        alt="Logo"
+        class="w-10 h-10 rounded-full"
+      />
+      <h1 class="text-2xl font-title font-semibold">People of Bangladesh</h1>
+    </div>
+    <div class="flex items-center space-x-6">
+      <button
+        id="about-toggle"
+        class="text-lg hover:text-amber-500 transition"
+      >
+        About
+      </button>
+    </div>
+  </header>
+
+  <!-- About Overlay -->
+  <div
+    id="about-overlay"
+    class="fixed inset-0 bg-black/30 backdrop-blur-md z-50 hidden"
+  >
+    <div
+      class="absolute top-10 right-10 text-xl cursor-pointer"
+      onclick="toggleAbout()"
+    >
+      ✖
+    </div>
+    <div
+      class="flex flex-col items-center justify-center h-full px-6 text-center font-overlay max-w-xl mx-auto"
+    >
+      <img
+        src="assets/Profile.png"
+        alt="Your Photo"
+        class="w-28 h-28 rounded-full shadow-lg mb-4"
+      />
+      <h2 class="text-2xl font-semibold">Toriqul Islam</h2>
+      <p class="mt-2">
+        I'm a student at Dhaka Central University (Formally Dhaka University
+        Affiliated for 7 Colleges), passionate about showcasing the vibrant
+        lives of everyday people in Bangladesh.
+      </p>
+      <div class="mt-6 space-y-1 text-sm">
+        <p>
+          📍 About this site: A public photo gallery dedicated to the people of
+          Bangladesh.
+        </p>
+        <p>
+          📧 Contact:
+          <a
+            href="mailto:toriqul728@gmail.com"
+            class="underline text-blue-400"
+            >toriqul728@gmail.com</a
+          >
+        </p>
+        <p>📤 Submit Photos: <span class="italic">(Coming Soon)</span></p>
+        <p>💳 Donate (BD): <span class="italic">(Method Coming)</span></p>
+        <p>🌍 Donate (Intl): <span class="italic">(Method Coming)</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content wrapper with 2 rows -->
+  <div id="welcome-gallery-wrapper">
+    <div id="welcome-text">
+      “In every face, a story. In every frame, a soul. Welcome to the unseen
+      Bangladesh.”
+    </div>
+    <section
+      id="gallery-container"
+      aria-label="Photo gallery"
+      class="grid"
+    ></section>
+  </div>
+
+  <!-- Modal -->
+  <div
+    id="imageModal"
+    class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-md flex items-center justify-center p-6"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      class="absolute top-6 right-6 text-white text-3xl cursor-pointer select-none"
+      onclick="closeModal()"
+      aria-label="Close modal"
+      role="button"
+      tabindex="0"
+    >
+      ✖
+    </div>
+    <div
+  class="flex flex-col md:flex-row bg-[#222831] rounded-lg shadow-lg max-w-5xl max-h-[90vh] overflow-hidden"
+  aria-labelledby="modalTitle"
+  aria-describedby="modalDescription"
+>
+  <!-- Fixed-ratio image container -->
+  <div class="flex-shrink-0 w-full md:w-[60%] aspect-[4/3] bg-black flex items-center justify-center">
+    <img
+      id="modalImage"
+      src=""
+      alt=""
+      class="max-w-full max-h-full object-contain rounded-md"
+    />
+  </div>
+
+  <!-- Scrollable metadata -->
+  <div
+    class="p-6 w-full md:w-[40%] max-h-[90vh] overflow-y-auto font-overlay text-white"
+    style="min-width: 320px"
+  >
+    <h2 id="modalTitle" class="text-2xl font-semibold mb-2"></h2>
+    <p id="modalLocation" class="text-amber-400 mb-1"></p>
+    <p id="modalDate" class="text-gray-300 mb-4 text-sm"></p>
+    <p id="modalDescription" class="text-justify text-gray-200"></p>
+  </div>
+</div>
+
+  </div>
+
+  <script>
+    const galleryData = [
+      {
+        thumb: "assets/thumb1.jpg",
+        full: "assets/thumb1.jpg",
+        title: "Tea Vendor in Old Dhaka",
+        location: "Old Dhaka, Bangladesh",
+        displayDate: "February 14, 2025 – 4:15 PM", // for UI
+        sortDate: "2025-02-14T16:15:00",            // for sorting
+        story: "In the narrow alleys of Old Dhaka..."
+      },
+      {
+        thumb: "assets/thumb2.jpg",
+        full: "assets/thumb2.jpg",
+        title: "Rickshaw Puller",
+        location: "Dhaka, Bangladesh",
+        displayDate: "March 3, 2025 – 10:30 AM", // for UI
+        sortDate: "2025-03-03T10:30:00",            // for sorting
+        story:
+          "A rickshaw puller navigating the bustling streets of Dhaka, showcasing the city's vibrant yet challenging transport culture.",
+      },
+      {
+        thumb: "assets/thumb3.jpg",
+        full: "assets/thumb3.jpg",
+        title: "Fisherman at Dawn",
+        location: "Kuakata, Bangladesh",
+        displayDate: "January 5, 2025 – 6:00 AM",
+        sortDate: "2025-01-05T06:00:00",
+        story:"A fisherman prepares his nets at the break of dawn, representing the traditional livelihoods tied closely to Bangladesh’s waters.",
+      },
+      {
+        thumb: "assets/DSCF3355.jpg",
+        full: "assets/DSCF3355.jpg",
+        title: "The Crimson Grace",
+        location: "Jhalokathi, Barishal Division, Bangladesh",
+        displayDate: "June 14, 2025 – 3:00 PM",
+        sortDate: "2025-06-14T15:00:00",
+        story:"In rural Jhalokathi, a girl in a flowing red dress walks through a harvested paddy field. Her graceful presence contrasts the golden stalks around her, evoking memories, dreams, and tradition. The scene reflects resilience, beauty, and the quiet rhythm of village life in Bangladesh after a season of labor.",
+      },
+      // Add more images as needed
+    ];
+
+    function buildGallery() {
+      const container = document.getElementById("gallery-container");
+      container.innerHTML = ""; // Clear
+
+      // 🔽 Sort from newest to oldest using sortDate
+      galleryData.sort((a, b) => new Date(b.sortDate) - new Date(a.sortDate));
+
+      galleryData.forEach((item, index) => {
+        const img = document.createElement("img");
+        img.src = item.thumb;
+        img.loading = "lazy";
+        img.alt = item.title;
+        img.className = "fade-in";
+        img.style.width = "100%";
+        img.style.marginBottom = "1.5rem";
+        img.dataset.index = index;
+        img.onclick = () => openModal(index);
+
+        // stagger animation delay
+        img.style.animationDelay = `${index * 0.15}s`;
+
+        container.appendChild(img);
+      });
+
+      Macy({
+        container: "#gallery-container",
+        trueOrder: false,
+        waitForImages: true,
+        margin: 12,
+        columns: 3,
+        breakAt: {
+          1200: 3,
+          900: 2,
+          600: 1,
+        },
+      });
+    }
+
+    // Modal open/close
+    function openModal(index) {
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalLocation = document.getElementById("modalLocation");
+      const modalDate = document.getElementById("modalDate");
+      const modalDescription = document.getElementById("modalDescription");
+
+      const data = galleryData[index];
+
+      modalImage.src = data.full;
+      modalImage.alt = data.title;
+      modalTitle.textContent = data.title;
+      modalLocation.textContent = `Location: ${data.location}`;
+      modalDate.textContent = `Captured: ${data.displayDate}`;
+      modalDescription.textContent = data.story;
+
+      modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("imageModal").classList.add("hidden");
+    }
+
+    // About overlay toggle
+    const aboutOverlay = document.getElementById("about-overlay");
+    document.getElementById("about-toggle").addEventListener("click", () => {
+      aboutOverlay.classList.remove("hidden");
+    });
+
+    function toggleAbout() {
+      aboutOverlay.classList.add("hidden");
+    }
+
+    // On DOM ready, fade in gallery and build images
+    document.addEventListener("DOMContentLoaded", () => {
+      const gallery = document.getElementById("gallery-container");
+      gallery.classList.remove("visible");
+
+      setTimeout(() => {
+        buildGallery();
+        gallery.classList.add("visible");
+      }, 500);
+    });
+  </script>
+</body>
+
+<!-- Footer -->
+<footer class="bg-[#1b1f24] text-gray-300 mt-10 px-6 py-8 font-overlay text-sm">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    
+    <!-- Left: Copyright -->
+    <div class="text-center md:text-left w-full md:w-auto">
+      <p>© <span id="current-year"></span> People of Bangladesh</p>
+    </div>
+
+    <!-- Center: Social Icons -->
+    <div class="flex space-x-4 justify-center w-full md:w-auto text-xl">
+  <a href="mailto:toriqul728@gmail.com" class="hover:text-amber-400" title="Email">
+    <i class="fas fa-envelope"></i>
+  </a>
+  <a href="https://facebook.com" class="hover:text-amber-400" title="Facebook" target="_blank">
+    <i class="fab fa-facebook"></i>
+  </a>
+  <a href="https://www.instagram.com/toriqul9018/" class="hover:text-amber-400" title="Instagram" target="_blank">
+    <i class="fab fa-instagram"></i>
+  </a>
+</div>
+
+
+    <!-- Right: Credit & Policy -->
+    <div class="text-center md:text-right w-full md:w-auto">
+      <p>Design & Development by <span class="text-amber-400">Toriqul Islam</span></p>
+      <p class="text-xs text-gray-400 mt-1">
+        Images © their respective photographers. <br class="hidden md:block" />
+        You may reuse with attribution.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</html>
